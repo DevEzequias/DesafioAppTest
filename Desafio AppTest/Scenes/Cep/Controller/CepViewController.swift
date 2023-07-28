@@ -27,12 +27,19 @@ final class CepViewController: UIViewController {
     
     private let cepTextField = UITextField(translateMask: false).apply {
         $0.placeholder = "Digite seu Cep"
-        $0.backgroundColor = .lightGray
-        $0.borderStyle = .line
         $0.font = .systemFont(ofSize: 18)
         $0.textColor = .black
         $0.keyboardType = .numberPad
         $0.addCEPMask()
+    }
+    
+    private let lineView = UIView(translateMask: false).apply {
+        $0.backgroundColor = .systemBlue
+        $0.setHeight(height: 1)
+    }
+    
+    private let cepView = UIView(translateMask: false).apply {
+        $0.backgroundColor = .clear
     }
 
     private lazy var playButton = UIButton(translateMask: false).apply {
@@ -92,11 +99,28 @@ extension CepViewController: CodeView {
     func buildViewHierarchy() {
         view.addSubview(stackView)
         
-        stackView.addArrangedSubviews([cepLabel, cepTextField, playButton])
+        cepView.addSubview(cepTextField)
+        cepView.addSubview(lineView)
+        stackView.addArrangedSubviews([cepLabel, cepView, playButton])
         stackView.spacing = 30
     }
     
     func setupConstraints() {
+        
+        cepTextField.anchor(
+            top: cepView.topAnchor,
+            leading: cepView.leadingAnchor,
+            trailing: cepView.trailingAnchor
+        )
+        
+        lineView.anchor(
+            top: cepTextField.bottomAnchor,
+            paddingTop: 6,
+            leading: cepView.leadingAnchor,
+            bottom: cepView.bottomAnchor,
+            trailing: cepView.trailingAnchor
+        )
+        
         stackView.anchor(
             top: view.safeAreaLayoutGuide.topAnchor,
             paddingTop: 32,
